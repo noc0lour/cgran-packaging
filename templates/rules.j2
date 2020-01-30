@@ -1,0 +1,20 @@
+#!/usr/bin/make -f
+DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+export DEB_HOST_MULTIARCH
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	dh_auto_configure -- -DLIB_SUFFIX=/$(DEB_HOST_MULTIARCH) -DCMAKE_BUILD_TYPE="RelWithDebInfo"
+
+override_dh_auto_test:
+	mkdir debian/test
+	mkdir debian/test/.gnuradio
+	- if [ $(DEB_BUILD_ARCH) != hurd-i386 ]; then HOME=$(CURDIR)/debian/test dh_auto_test -- CTEST_TEST_TIMEOUT=60 ; fi
+	rm -rf debian/test
+
+override_dh_install-arch:
+	rm -f debian/tmp/usr/lib/python3/dist-packages/{{ package_name|replace('gr-','') }}/*.pyc
+	rm -f debian/tmp/usr/lib/python3/dist-packages/{{ package_name|replace('gr-','') }}/*.pyo
+	dh_install --arch

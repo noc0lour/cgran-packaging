@@ -1,0 +1,11 @@
+---
+package_description: "FM RDS/TMC Transceiver"
+package_name: "gr-rds"
+package_full_name: "GNU Radio FM RDS/TMC Tranceiver"
+package_homepage: "https://github.com/bastibl/gr-rds"
+package_src: "https://github.com/bastibl/gr-rds.git"
+package_copyright: "2014 Bastian Bloessl <bloessl@ccs-labs.org>"
+package_license: "GPL-3+"
+supported_versions:
+  "3.7": "maint-3.7"
+  "3.8": "maint-3.8"

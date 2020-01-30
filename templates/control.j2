@@ -1,0 +1,52 @@
+Source: "{{ package_name }}"
+Section: libdevel
+Priority: optional
+Maintainer:"{{ cgran_package_maintainer }}"
+Build-Depends: cmake,
+               debhelper (>= 12~),
+               dh-python,
+               doxygen,
+               gnuradio-dev (>=3.8),
+               graphviz,
+               libboost-regex-dev,
+               libboost-system-dev,
+               libgmp-dev,
+               liblog4cpp5-dev,
+               liborc-0.4-dev,
+               pkg-config,
+               python3-dev,
+               swig,
+{%- for dep in package_dependencies %}
+               {{ dep }},
+{%- endfor %}
+Build-Depends-Indep: doxygen
+Standards-Version: 4.4.1
+Homepage: {{ package_homepage }}
+
+Package: {{ package_name }}
+Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
+Depends: gnuradio-dev,
+         libgnuradio-{{ package_name|replace('gr-','') }} (=${binary:Version}),
+         python3,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Description: {{ package_full_name }}
+{{ package_description }}
+Package: {{ package_name }}-doc
+Section: doc
+Architecture: all
+Pre-Depends: ${misc:Pre-Depends}
+Depends: libjs-jquery, ${misc:Depends}
+Description: {{ package_full_name }} - Documentation
+{{ package_description }}
+
+Package: libgnuradio-{{ package_name|replace('gr-','') }}
+Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Recommends: {{ package_name }}
+Section: libs
+Description: {{ package_full_name }} - library
+{{ package_description }}
+This package provides a shared library.
